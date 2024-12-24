@@ -1,7 +1,4 @@
 import asyncio
-import datetime
-import random
-import string
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart, Command
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery, BotCommand, \
@@ -12,8 +9,6 @@ from datetime import datetime
 from xlwt import Workbook
 
 
-#adfs
-a = 1
 bot = Bot(token='7875381627:AAFM7Oq6qqY1HLmTTa-nBR83g35V85Si-4U')
 days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -23,7 +18,7 @@ dp = Dispatcher()
 users = {}
 log_pass = open('logs_and_passes.txt', 'r').read().split('\n')
 ws = xw.Book("запись.xls").sheets['запись']
-v1 = ws.range("A1:C" + str(days[datetime.datetime.now().month - 1])).value
+v1 = ws.range("A1:C" + str(days[datetime.now().month - 1])).value
 print(v1)
 logs = []
 log_pass1 = []
@@ -149,7 +144,7 @@ async def work(message: types.Message):
         if not a:
             await message.answer('Мы не смогли распознать вашу дату')
         if a:
-            if int(message.text.split('.')[0]) > days[datetime.datetime.now().month - 1]:
+            if int(message.text.split('.')[0]) > days[datetime.now().month - 1]:
                 a = False
                 await message.answer('Мы не смогли распознать вашу дату')
             if int(message.text.split('.')[1]) > 12:
@@ -158,17 +153,17 @@ async def work(message: types.Message):
             msg = message.text.split('.')
             b, c = msg[0], msg[1]
             cur_dt = datetime.now()
-            date1 = datetime.strptime(cur_dt.year + '-' + cur_dt.month + '-' + cur_dt.day, '%Y-%m-%d')
+            date1 = datetime.strptime((cur_dt.year + '-' + cur_dt.month + '-' + cur_dt.day), '%Y-%m-%d')
             date2 = datetime.strptime(cur_dt.year + '-' + c + '-' + b, '%Y-%m-%d')
             if date1 > date2:
                 a = False
                 await message.answer('Введенная вами дата раньше нынешней даты!')
         if a:
             ws = xw.Book("запись.xls").sheets['запись']
-            v1 = ws.range("A1:D" + str(days[datetime.datetime.now().month - 1])).value
+            v1 = ws.range("A1:D" + str(days[datetime.now().month - 1])).value
             date = 0
             for i in range(len(v1)):
-                for el in i:
+                for el in v1[i]:
                     if el is None and b - 1 == i:
                         await message.answer('Данная дата свободна')
                         date = b
@@ -195,10 +190,16 @@ async def work(message: types.Message):
             await message.answer('Вы не можете выбрать данное время')
         else:
             if message.text == '11:00':
-
+                sheet1 = wb.add_sheet('запись')
+                sheet1.write(1, users[id][5] - 1, 'Занято')
             if message.text == '14:00':
-
+                sheet1 = wb.add_sheet('запись')
+                sheet1.write(1, users[id][5] - 1, 'Занято')
             if message.text == '17:00':
+                sheet1 = wb.add_sheet('запись')
+                sheet1.write(1, users[id][5] - 1, 'Занято')
+            await message.answer('Благодарим за запись')
+            users[id] = users[id][0:4]
     else:
         if id not in users:
             await message.answer('Простите, но вы еще не авторизованы')
