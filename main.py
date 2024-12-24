@@ -9,7 +9,7 @@ from datetime import datetime
 from xlwt import Workbook
 
 
-bot = Bot(token='7875381627:AAFM7Oq6qqY1HLmTTa-nBR83g35V85Si-4U')
+bot = Bot(token='Свой вставляйте')
 days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 wb = Workbook()
